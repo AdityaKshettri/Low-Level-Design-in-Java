@@ -1,125 +1,35 @@
 package com.aditya.project;
 
+import com.aditya.project.api.GameEngine;
+import com.aditya.project.game.Board;
+import com.aditya.project.game.Cell;
+import com.aditya.project.game.Move;
+import com.aditya.project.user.Player;
+
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
-
-    }
-
-    public Board start() {
-        return new Board();
-    }
-
-    public void move(Board board, Player player, Move move) {
-
-    }
-
-    public GameResult isComplete(Board board) {
-        if (board instanceof TicTacToe ticTacToe) {
-            String firstChar = "-";
-            boolean rowComplete = true;
-            for (int i = 0; i < 3; i++) {
-                rowComplete = true;
-                firstChar = ticTacToe.cells[i][0];
-                for (int j = 1; j < 3; j++) {
-                    if (!ticTacToe.cells[i][j].equals(firstChar)) {
-                        rowComplete = false;
-                        break;
-                    }
-                }
-                if (rowComplete) {
-                    break;
-                }
+        GameEngine gameEngine = new GameEngine();
+        Board board = gameEngine.start("TicTacToe");
+        // make moves in a loop
+        Scanner scanner = new Scanner(System.in);
+        int row, col;
+        while (!gameEngine.isComplete(board).isOver()) {
+            Player computer = new Player("O");
+            Player human = new Player("X");
+            System.out.println("Make your move!");
+            System.out.println(board);
+            row = scanner.nextInt();
+            col = scanner.nextInt();
+            Move humanMove = new Move(new Cell(row, col));
+            gameEngine.move(board, human, humanMove);
+            if (!gameEngine.isComplete(board).isOver()) {
+                Move computerMove = gameEngine.suggestMove(computer, board);
+                gameEngine.move(board, computer, computerMove);
             }
-
-            if (rowComplete) {
-                return new GameResult(true, firstChar);
-            }
-
-            boolean colComplete = true;
-            for (int i = 0; i < 3; i++) {
-                colComplete = true;
-                firstChar = ticTacToe.cells[i][0];
-                for (int j = 1; j < 3; j++) {
-                    if (!ticTacToe.cells[i][j].equals(firstChar)) {
-                        colComplete = false;
-                        break;
-                    }
-                }
-                if (colComplete) {
-                    break;
-                }
-            }
-
-            if (colComplete) {
-                return new GameResult(true, firstChar);
-            }
-
-            boolean diagComplete = true;
-            for (int i = 0; i < 3; i++) {
-                firstChar = ticTacToe.cells[0][0];
-                if (!ticTacToe.cells[i][i].equals(firstChar)) {
-                    diagComplete = false;
-                    break;
-                }
-            }
-
-            if (diagComplete) {
-                return new GameResult(true, firstChar);
-            }
-
-            boolean revDiagComplete = true;
-            for (int i = 0; i < 3; i++) {
-                firstChar = ticTacToe.cells[0][0];
-                if (!ticTacToe.cells[i][2 - i].equals(firstChar)) {
-                    revDiagComplete = false;
-                    break;
-                }
-            }
-
-            if (revDiagComplete) {
-                return new GameResult(true, firstChar);
-            }
-
-            int countOfFilledCells = 0;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (ticTacToe.cells[i][j] != null) {
-                        countOfFilledCells++;
-                    }
-                }
-            }
-
-            if (countOfFilledCells == 9) {
-                return new GameResult(true, "-");
-            } else {
-                return new GameResult(false, "-");
-            }
-        } else {
-            return new GameResult(false, "-");
+            System.out.println("Game Result: " + gameEngine.isComplete(board));
         }
-    }
-}
-
-class Board {
-}
-
-class TicTacToe extends Board {
-    String[][] cells = new String[3][3];
-}
-
-class Player {
-}
-
-class Move {
-}
-
-class GameResult {
-    boolean isOver;
-    String winner;
-
-    public GameResult(boolean isOver, String winner) {
-        this.isOver = isOver;
-        this.winner = winner;
     }
 }
