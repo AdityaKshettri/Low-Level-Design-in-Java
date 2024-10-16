@@ -2,6 +2,7 @@ package com.aditya.project.boards;
 
 import com.aditya.project.game.Board;
 import com.aditya.project.game.Cell;
+import com.aditya.project.game.Move;
 
 public class TicTacToe extends Board {
 
@@ -29,5 +30,10 @@ public class TicTacToe extends Board {
             result.append("\n");
         }
         return result.toString();
+    }
+
+    @Override
+    public void move(Move move) {
+        setCell(move.getCell(), move.getPlayer().symbol());
     }
 }
