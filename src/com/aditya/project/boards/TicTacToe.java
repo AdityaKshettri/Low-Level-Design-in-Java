@@ -4,16 +4,20 @@ import com.aditya.project.game.Board;
 import com.aditya.project.game.Cell;
 import com.aditya.project.game.Move;
 
-public class TicTacToe extends Board {
+public class TicTacToe implements Board {
 
     String[][] cells = new String[3][3];
 
-    public String getCell(int i, int j) {
+    public String getSymbol(int i, int j) {
         return cells[i][j];
     }
 
     public void setCell(Cell cell, String symbol) {
-        cells[cell.getRow()][cell.getCol()] = symbol;
+        if (cells[cell.getRow()][cell.getCol()] == null) {
+            cells[cell.getRow()][cell.getCol()] = symbol;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     @Override
@@ -35,5 +39,14 @@ public class TicTacToe extends Board {
     @Override
     public void move(Move move) {
         setCell(move.getCell(), move.getPlayer().symbol());
+    }
+
+    @Override
+    public TicTacToe copy() {
+        TicTacToe board = new TicTacToe();
+        for (int i = 0; i < 3; i++) {
+            System.arraycopy(cells[i], 0, board.cells[i], 0, 3);
+        }
+        return board;
     }
 }

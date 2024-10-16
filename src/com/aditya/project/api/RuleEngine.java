@@ -9,14 +9,14 @@ public class RuleEngine {
     public GameState getState(Board board) {
         if (board instanceof TicTacToe ticTacToe) {
             String firstChar = "-";
-            
+
             boolean rowComplete = true;
             for (int i = 0; i < 3; i++) {
-                firstChar = ticTacToe.getCell(i, 0);
+                firstChar = ticTacToe.getSymbol(i, 0);
                 rowComplete = firstChar != null;
                 if (firstChar != null) {
                     for (int j = 1; j < 3; j++) {
-                        if (!firstChar.equals(ticTacToe.getCell(i, j))) {
+                        if (!firstChar.equals(ticTacToe.getSymbol(i, j))) {
                             rowComplete = false;
                             break;
                         }
@@ -33,11 +33,11 @@ public class RuleEngine {
 
             boolean colComplete = true;
             for (int i = 0; i < 3; i++) {
-                firstChar = ticTacToe.getCell(0, i);
+                firstChar = ticTacToe.getSymbol(0, i);
                 colComplete = firstChar != null;
                 if (firstChar != null) {
                     for (int j = 1; j < 3; j++) {
-                        if (!firstChar.equals(ticTacToe.getCell(j, i))) {
+                        if (!firstChar.equals(ticTacToe.getSymbol(j, i))) {
                             colComplete = false;
                             break;
                         }
@@ -52,11 +52,11 @@ public class RuleEngine {
                 return new GameState(true, firstChar);
             }
 
-            firstChar = ticTacToe.getCell(0, 0);
+            firstChar = ticTacToe.getSymbol(0, 0);
             boolean diagComplete = firstChar != null;
             if (firstChar != null) {
                 for (int i = 0; i < 3; i++) {
-                    if (!firstChar.equals(ticTacToe.getCell(i, i))) {
+                    if (!firstChar.equals(ticTacToe.getSymbol(i, i))) {
                         diagComplete = false;
                         break;
                     }
@@ -67,11 +67,11 @@ public class RuleEngine {
                 return new GameState(true, firstChar);
             }
 
-            firstChar = ticTacToe.getCell(0, 2);
+            firstChar = ticTacToe.getSymbol(0, 2);
             boolean revDiagComplete = firstChar != null;
             if (firstChar != null) {
                 for (int i = 0; i < 3; i++) {
-                    if (!firstChar.equals(ticTacToe.getCell(i, 2 - i))) {
+                    if (!firstChar.equals(ticTacToe.getSymbol(i, 2 - i))) {
                         revDiagComplete = false;
                         break;
                     }
@@ -85,7 +85,7 @@ public class RuleEngine {
             int countOfFilledCells = 0;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (ticTacToe.getCell(i, j) != null) {
+                    if (ticTacToe.getSymbol(i, j) != null) {
                         countOfFilledCells++;
                     }
                 }
